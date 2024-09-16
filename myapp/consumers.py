@@ -46,10 +46,7 @@ Your goal is to create an authentic human-like interaction, making users believe
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        await self.send(text_data=json.dumps({
-            'message': text_data_json.get('filename', '')
-        }))
-        user_message = text_data_json['message']
+        user_message = text_data_json['query']
         self.message.append({"role":"user","content": user_message})
         chain = (
             self.llm
@@ -68,9 +65,4 @@ Your goal is to create an authentic human-like interaction, making users believe
         # Allow other asynchronous tasks to run
             await asyncio.sleep(0)
         self.message.append({'role': 'assistant','content': complete})
-        
-        # Signal the end of the stream
-        await self.send(text_data=json.dumps({
-                'message': '[END]'
-            }))
         

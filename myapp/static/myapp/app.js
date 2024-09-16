@@ -1,4 +1,4 @@
-const socket = new WebSocket('wss://' + window.location.host + '/ws/stream/');
+const socket = new WebSocket('ws://' + window.location.host + '/ws/stream/');
 // Initialize the map and set the view to a default location
 var map = L.map('map').setView([51.505, -0.09], 13);
 

@@ -25,29 +25,8 @@ L.control.layers(baseMaps).addTo(map);
 socket.onmessage = function(event) {
     const data = JSON.parse(event.data);
     const message = data.message;
-<<<<<<< HEAD
     const jsonObject = JSON.parse(message);
     addMarkers(jsonObject.places);
-=======
-    
-    // Fetch coordinates using Nominatim API
-    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${location}`)
-    .then(response => response.json())
-    .then(data => {
-        if (data && data.length > 0) {
-            // Get the first result's latitude and longitude
-            var lat = data[0].lat;
-            var lon = data[0].lon;
-            // Set the map view to the searched location
-            map.setView([lat, lon], 13);
-            // Add a marker to the location
-            L.marker([lat, lon]).addTo(map)
-                .bindPopup(`<h1>${location}</h1><br>{}`)
-                .openPopup();
-        }
-})
-    console.log(typeof(message));
->>>>>>> 34c3ecbac122fa7c0c0d72ea51b6aca77f222643
 };
 
 function searchLocation() {

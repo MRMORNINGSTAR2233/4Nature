@@ -1,9 +1,9 @@
-async function generatePlan() {
+const socket = new WebSocket("ws://" + window.location.host + "/ws/stream/");
+function generatePlan() {
   const destination = document.getElementById("destination").value;
   const startDate = document.getElementById("start-date").value;
   const endDate = document.getElementById("end-date").value;
   const activities = document.getElementById("activities").value;
-  const socket = new WebSocket("ws://" + window.location.host + "/ws/stream/");
 
   if (destination && startDate && endDate) {
     const travelData = {
@@ -14,29 +14,28 @@ async function generatePlan() {
     };
 
     try {
-      // Placeholder API endpoint (replace with your actual endpoint)
-      const apiEndpoint = "https://your-ai-api-endpoint.com/generate-plan";
+        socket.send(JSON.stringify({ type: 'plan', query: travelData.destination }));
+        socket.onmessage = function(event) {
 
-      const response = await fetch(apiEndpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(travelData),
-      });
+        const data = JSON.parse(event.data);
+        const message = data.message;
 
-      if (response.ok) {
-        const data = await response.json();
-        // Assuming the API returns a field called 'aiGeneratedPlan'
-        const planOutput = `
-          <h3>Your AI-Powered Travel Plan</h3>
-          <p>${data.aiGeneratedPlan}</p>
-        `;
-        document.getElementById("plan-output").innerHTML = planOutput;
-        document.getElementById("travel-plan").classList.remove("hidden");
-      } else {
-        throw new Error("Failed to generate plan. Try again later.");
-      }
+        const jsonObject = JSON.parse(message);
+
+        if (jsonObject) {
+          console.log(jsonObject);
+          jsonObject.places.forEach(element => {
+            const planOutput = `
+                <h3>${element.place}</h3>
+                <p>${element.description}</p>
+            `;
+            document.getElementById("plan-output").innerHTML += planOutput;
+            document.getElementById("travel-plan").classList.remove("hidden");
+        });        
+        } else {
+          throw new Error("Failed to generate plan. Try again later.");
+        }
+    };
     } catch (error) {
       alert(error.message);
     }

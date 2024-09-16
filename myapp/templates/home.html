@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hejje - AI Travel Planner</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Poppins:wght@400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background-color: #ffffff;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        nav {
+            display: flex;
+        }
+
+        nav a {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            margin-left: 30px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #008080;
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-nav {
+            display: none;
+            flex-direction: column;
+            background-color: #ffffff;
+            position: absolute;
+            top: 70px;
+            right: 50px;
+            width: 200px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-nav a {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .mobile-nav a:last-child {
+            border-bottom: none;
+        }
+
+        .menu-icon {
+            display: none;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: url('https://source.unsplash.com/1600x900/?travel,adventure') center center/cover no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .hero h1 {
+            font-size: 60px;
+            margin-bottom: 20px;
+            animation: fadeInUp 1.5s ease-in-out;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            animation: fadeInUp 2s ease-in-out;
+        }
+
+        .hero a {
+            background-color: #008080;
+            padding: 15px 30px;
+            color: white;
+            border-radius: 30px;
+            font-size: 18px;
+            text-transform: uppercase;
+            transition: background-color 0.3s;
+            animation: fadeInUp 2.5s ease-in-out;
+        }
+
+        .hero a:hover {
+            background-color: #004c4c;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #ffffff;
+            padding: 20px 50px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .footer-left {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .footer-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-right img {
+            margin-right: 10px;
+        }
+
+        .footer-right a {
+            color: #008080;
+            transition: color 0.3s;
+        }
+
+        .footer-right a:hover {
+            color: #004c4c;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 20px 20px;
+            }
+
+            .menu-icon {
+                display: block;
+                color: #333;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .mobile-nav {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            footer {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .footer-right img {
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <div class="logo">Hejje</div>
+        <nav>
+            <a href="{% url 'aiplanner' %}">AI-Travel Planner</a>
+            <a href="{% url 'stream' %}">Map</a>
+            <a href="{% url 'login_signup' %}">Login/Signup</a>
+            <a href="{% url 'business' %}">Business</a>
+        </nav>
+        <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+        <div class="mobile-nav" id="mobileNav">
+            <a href="{% url 'aiplanner' %}">AI-Travel Planner</a>
+            <a href="{% url 'stream' %}">Map</a>
+            <a href="{% url 'login_signup' %}">Login/Signup</a>
+            <a href="{% url 'business' %}">Business</a>
+        </div>
+    </header>
+
+    <!-- Main Section / Hero Image -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Unleash Your Next Journey with Hejje</h1>
+            <p>AI-Powered Travel Planning at Your Fingertips</p>
+            <a href="{% url 'aiplanner' %}">Start Planning</a>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-left">
+                © 2024 Hejje
+            </div>
+            <div class="footer-right">
+                <img src="logo.png" alt="Hejje Logo" width="30">
+                <a href="https://www.linkedin.com" target="_blank">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const mobileNav = document.getElementById('mobileNav');
+            if (mobileNav.style.display === 'flex') {
+                mobileNav.style.display = 'none';
+            } else {
+                mobileNav.style.display = 'flex';
+            }
+        }
+    </script>
+
+</body>
+
+</html>

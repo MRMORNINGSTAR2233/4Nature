@@ -3,6 +3,7 @@ async function generatePlan() {
   const startDate = document.getElementById("start-date").value;
   const endDate = document.getElementById("end-date").value;
   const activities = document.getElementById("activities").value;
+  const socket = new WebSocket("ws://" + window.location.host + "/ws/stream/");
 
   if (destination && startDate && endDate) {
     const travelData = {

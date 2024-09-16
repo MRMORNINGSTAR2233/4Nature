@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaflet Fullscreen Map with Search - Modern UI</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        /* Fullscreen Map */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+
+        /* Modern UI - Search Bar at the Top */
+        .search-container {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 420px;
+            height: 60px;
+            padding: 10px;
+            display: flex;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        .search-container input {
+            flex: 1;
+            font-size: larger;
+            padding: 8px 10px;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .search-container button {
+            padding: 8px 15px;
+            margin-left: 5px;
+            width: 70px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2000;
+            border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .search-container button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="search-container">
+        <input type="text" id="search" placeholder="Search location">
+        <button onclick="searchLocation()">Go</button>
+    </div>
+
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map and set the view to a default location
+        var map = L.map('map').setView([51.505, -0.09], 13);
+
+        // Define the OpenStreetMap layer
+        var osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        });
+
+        // Define the ESRI Satellite layer
+        var satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+        });
+
+        // Add the OSM layer by default
+        osmLayer.addTo(map);
+
+        // Add layer controls to switch between layers
+        var baseMaps = {
+            "OpenStreetMap": osmLayer,
+            "Satellite": satelliteLayer
+        };
+        L.control.layers(baseMaps).addTo(map);
+
+        // Search function using Nominatim API for location search
+        function searchLocation() {
+            var location = document.getElementById('search').value;
+
+            if (location) {
+                // Fetch coordinates using Nominatim API
+                fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${location}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data.length > 0) {
+                            // Get the first result's latitude and longitude
+                            var lat = data[0].lat;
+                            var lon = data[0].lon;
+
+                            // Set the map view to the searched location
+                            map.setView([lat, lon], 13);
+
+                            // Add a marker to the location
+                            L.marker([lat, lon]).addTo(map)
+                                .bindPopup(`<b>${location}</b><br>Latitude: ${lat}<br>Longitude: ${lon}`)
+                                .openPopup();
+                        } else {
+                            alert('Location not found. Please try again.');
+                        }
+                    })
+                    .catch(error => {
+                        alert('Error fetching location data: ' + error);
+                    });
+            } else {
+                alert('Please enter a location to search.');
+            }
+        }
+    </script>
+</body>
+</html>

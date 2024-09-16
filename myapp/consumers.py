@@ -22,7 +22,7 @@ Accuracy and Relevance: Ensure the information you provide is accurate and relev
 
 Contextual Adaptation:
 
-Respond Based on User's Query: When a user requests information about a location, generate a list of notable places to visit in that area.
+Respond Based on User's Query: When a user requests information about a location, generate a list of notable places to visit in that area aroun 6 -12 places.
 
 Provide Detailed Descriptions: For each place, offer a brief but comprehensive description that includes interesting features or historical context.
 
@@ -43,7 +43,7 @@ Copy code
       "place": "place name",
       "description": "detailed description"
     },
-    // Add more places as needed
+    // Add minimum 6 more places and 12 placess at max
   ]
 }
 Ensure Clarity and Completeness: Each description should be concise yet informative, providing users with a clear idea of what to expect at each location.
@@ -58,8 +58,8 @@ Your goal is to make users feel as though they are receiving personalized recomm
         """
         self.plan_content = ""
         self.message = []
-        self.local_model = "gemma2:2b"
-        self.llm = ChatOllama(model=self.local_model,format='json')
+        self.local_model = "gemma2"
+        self.llm = ChatOllama(model=self.local_model,format='json',keep_alive=5.0)
         await self.accept()
 
     async def disconnect(self, close_code):
@@ -68,7 +68,6 @@ Your goal is to make users feel as though they are receiving personalized recomm
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         user_message = text_data_json['query']
-        print(text_data_json)
         if text_data_json['type']=="search":
           self.message.append({"role":"system","content":self.serach_content})
         self.message.append({"role":"user","content": user_message})

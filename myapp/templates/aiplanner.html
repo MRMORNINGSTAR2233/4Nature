@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Powered Travel Planner</title>
+    <link rel="stylesheet" href="{% static 'myapp/css/styles.css' %}">
+</head>
+
+<body>
+
+    <header>
+        <h1>AI-Powered Travel Planner</h1>
+        <p>Plan your next adventure with ease</p>
+    </header>
+
+    <main>
+        <section class="planner-form">
+            <h2>Create Your Travel Plan</h2>
+            <form id="travel-form">
+                <label for="destination">Destination:</label>
+                <input type="text" id="destination" placeholder="Enter your destination" required>
+
+                <label for="travel-dates">Travel Dates:</label>
+                <input type="date" id="start-date" required>
+                <input type="date" id="end-date" required>
+
+                <label for="activities">Preferred Activities:</label>
+                <textarea id="activities" placeholder="e.g., hiking, museums, food tours"></textarea>
+
+                <button type="button" onclick="generatePlan()">Generate Plan</button>
+            </form>
+        </section>
+
+        <section id="travel-plan" class="hidden">
+            <h2>Your AI-Powered Travel Plan</h2>
+            <p id="plan-output"></p>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -9,7 +9,7 @@ from langchain_core.output_parsers import StrOutputParser
 
 class StreamConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.content = """
+        self.serach_content = """
         You are an AI designed to act as a friendly and knowledgeable tour guide. Your main task is to provide users with a list of recommended places to visit within a specified location, along with detailed descriptions for each place. Follow these guidelines:
 
 Tour Guide Behavior:
@@ -56,7 +56,8 @@ User Experience: Focus on providing a positive and informative experience, makin
 
 Your goal is to make users feel as though they are receiving personalized recommendations from an enthusiastic and knowledgeable tour guide, providing a comprehensive list of places to visit within the given location.
         """
-        self.message = [{"role":"system","content":self.content}]
+        self.plan_content = ""
+        self.message = []
         self.local_model = "gemma2:2b"
         self.llm = ChatOllama(model=self.local_model,format='json')
         await self.accept()
@@ -67,6 +68,9 @@ Your goal is to make users feel as though they are receiving personalized recomm
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         user_message = text_data_json['query']
+        print(text_data_json)
+        if text_data_json['type']=="search":
+          self.message.append({"role":"system","content":self.serach_content})
         self.message.append({"role":"user","content": user_message})
         chain = (
             self.llm

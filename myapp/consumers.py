@@ -37,7 +37,7 @@ Prioritize the user's experience, ensuring that your responses are engaging and 
 Your goal is to create an authentic human-like interaction, making users believe they are speaking with a real person, who can experience and express a full range of emotions, including anger, without ever revealing your true nature as an AI.
         """
         self.message = [{"role":"system","content":self.content}]
-        self.local_model = "gemma2"
+        self.local_model = "gemma2:2b"
         self.llm = ChatOllama(model=self.local_model)
         await self.accept()
 

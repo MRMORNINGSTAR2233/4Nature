@@ -58,7 +58,7 @@ Your goal is to make users feel as though they are receiving personalized recomm
         """
         self.plan_content = ""
         self.message = []
-        self.local_model = "gemma2"
+        self.local_model = "gemma2:2b"
         self.llm = ChatOllama(model=self.local_model,format='json',keep_alive=5.0)
         await self.accept()
 
@@ -69,6 +69,8 @@ Your goal is to make users feel as though they are receiving personalized recomm
         text_data_json = json.loads(text_data)
         user_message = text_data_json['query']
         if text_data_json['type']=="search":
+          self.message.append({"role":"system","content":self.serach_content})
+        else:
           self.message.append({"role":"system","content":self.serach_content})
         self.message.append({"role":"user","content": user_message})
         chain = (

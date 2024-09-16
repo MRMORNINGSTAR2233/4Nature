@@ -38,7 +38,7 @@ Your goal is to create an authentic human-like interaction, making users believe
         """
         self.message = [{"role":"system","content":self.content}]
         self.local_model = "gemma2:2b"
-        self.llm = ChatOllama(model=self.local_model)
+        self.llm = ChatOllama(model=self.local_model,format='json')
         await self.accept()
 
     async def disconnect(self, close_code):

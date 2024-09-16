@@ -42,7 +42,7 @@ socket.onmessage = function(event) {
                 .openPopup();
         }
 })
-    console.log(message);
+    console.log(typeof(message));
 };
 
 function searchLocation() {

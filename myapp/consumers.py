@@ -52,17 +52,12 @@ Your goal is to create an authentic human-like interaction, making users believe
             self.llm
             | StrOutputParser()
         )
-        chat = chain.stream(self.message)
-        complete = ''
-        # Handle the streaming response
-        for chunk in chat:
-            complete += chunk
-            
-            # Send the chunk as soon as it's received
-            await self.send(text_data=json.dumps({
-                'message': chunk
-            }))            
-        # Allow other asynchronous tasks to run
-            await asyncio.sleep(0)
-        self.message.append({'role': 'assistant','content': complete})
+        chat = chain.invoke(self.message)
+        
+        # Send the chunk as soon as it's received
+        await self.send(text_data=json.dumps({
+            'message': chat
+        }))            
+        self.message.remove({"role":"user","content": user_message})
+
         

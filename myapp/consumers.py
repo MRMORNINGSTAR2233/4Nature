@@ -132,7 +132,7 @@ User Experience: Focus on delivering an exciting and enjoyable travel planning e
         """
         self.message = []
         self.local_model = "gemma2:2b"
-        self.llm = ChatOllama(model=self.local_model,format='json',keep_alive=5.0)
+        self.llm = ChatOllama(model=self.local_model,format='json',keep_alive=-1)
         await self.accept()
 
     async def disconnect(self, close_code):
@@ -144,9 +144,9 @@ User Experience: Focus on delivering an exciting and enjoyable travel planning e
         if text_data_json['type']=="search":
           self.message.append({"role":"system","content":self.serach_content})
         else:
-          self.message.append({"role":"system","content":self.serach_content})
-          
-        self.message.append({"role":"user","content": user_message})
+          self.message.append({"role":"system","content":self.plan_content})
+  
+        self.message.append({"role":"user","content": str(user_message)})
         chain = (
             self.llm
             | StrOutputParser()
@@ -156,7 +156,7 @@ User Experience: Focus on delivering an exciting and enjoyable travel planning e
         # Send the chunk as soon as it's received
         await self.send(text_data=json.dumps({
             'message': chat
-        }))            
-        self.message.remove({"role":"user","content": user_message})
+        })) 
+        self.message.remove({"role":"user","content": str(user_message)})
 
         

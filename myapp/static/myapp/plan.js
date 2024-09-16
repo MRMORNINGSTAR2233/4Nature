@@ -14,7 +14,7 @@ function generatePlan() {
     };
 
     try {
-        socket.send(JSON.stringify({ type: 'plan', query: travelData.destination }));
+        socket.send(JSON.stringify({ type: 'plan', query: travelData }));
         socket.onmessage = function(event) {
 
         const data = JSON.parse(event.data);

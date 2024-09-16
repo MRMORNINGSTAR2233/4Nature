@@ -5,3 +5,6 @@ def stream_view(request):
 
 def plan_view(request):
     return render(request, 'aiplanner.html')
+
+def home(request):
+    return render(request,'home.html')

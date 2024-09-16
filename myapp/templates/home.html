@@ -261,16 +261,14 @@
     <header>
         <div class="logo">Hejje</div>
         <nav>
-            <a href="{% url 'aiplanner' %}">AI-Travel Planner</a>
-            <a href="{% url 'stream' %}">Map</a>
-            <a href="{% url 'login_signup' %}">Login/Signup</a>
-            <a href="{% url 'business' %}">Business</a>
+            <a href="{% url 'plan_view' %}">AI-Travel Planner</a>
+            <a href="{% url 'stream_view' %}">Map</a>
+             <a href="{% url 'business' %}">Business</a>
         </nav>
         <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
         <div class="mobile-nav" id="mobileNav">
-            <a href="{% url 'aiplanner' %}">AI-Travel Planner</a>
-            <a href="{% url 'stream' %}">Map</a>
-            <a href="{% url 'login_signup' %}">Login/Signup</a>
+            <a href="{% url 'plan_view' %}">AI-Travel Planner</a>
+            <a href="{% url 'stream_view' %}">Map</a>
             <a href="{% url 'business' %}">Business</a>
         </div>
     </header>
@@ -280,7 +278,7 @@
         <div class="hero-content">
             <h1>Unleash Your Next Journey with Hejje</h1>
             <p>AI-Powered Travel Planning at Your Fingertips</p>
-            <a href="{% url 'aiplanner' %}">Start Planning</a>
+            <a href="{% url 'plan_view' %}">Start Planning</a>
         </div>
     </section>
 

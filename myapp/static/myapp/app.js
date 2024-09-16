@@ -25,24 +25,8 @@ L.control.layers(baseMaps).addTo(map);
 socket.onmessage = function(event) {
     const data = JSON.parse(event.data);
     const message = data.message;
-    
-    // Fetch coordinates using Nominatim API
-    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${location}`)
-    .then(response => response.json())
-    .then(data => {
-        if (data && data.length > 0) {
-            // Get the first result's latitude and longitude
-            var lat = data[0].lat;
-            var lon = data[0].lon;
-            // Set the map view to the searched location
-            map.setView([lat, lon], 13);
-            // Add a marker to the location
-            L.marker([lat, lon]).addTo(map)
-                .bindPopup(`<h1>${location}</h1><br>{}`)
-                .openPopup();
-        }
-})
-    console.log(message);
+    const jsonObject = JSON.parse(message);
+    addMarkers(jsonObject.places);
 };
 
 function searchLocation() {
@@ -56,5 +40,32 @@ function searchLocation() {
     }
 }
 
+const markersLayer = L.layerGroup().addTo(map);
+
+// Function to fetch coordinates and add markers
+function addMarkers(places) {
+    // Clear existing markers
+    markersLayer.clearLayers();
+    
+    places.forEach(place => {
+        // Fetch coordinates using Nominatim API
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(place.place)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.length > 0) {
+                    // Get the first result's latitude and longitude
+                    const lat = data[0].lat;
+                    const lon = data[0].lon;
+                    // Set the map view to the searched location
+                    map.setView([lat, lon], 13);
+                    // Add a marker to the location
+                    L.marker([lat, lon]).addTo(markersLayer)
+                        .bindPopup(`<h1>${place.place}</h1><br>${place.description}`)
+                        .openPopup();
+                }
+            })
+            .catch(error => console.error('Error fetching location:', error));
+    });
+}
 
 

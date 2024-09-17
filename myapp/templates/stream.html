@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,17 +9,177 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
     <link rel="stylesheet" href="{% static 'myapp/css/styles.css' %}">
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background-color: #ffffff;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 500;
+            color: #333;
+            top: 500px;
+        }
+
+        nav {
+            display: flex;
+            top: 500px;
+        }
+
+        nav a {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            margin-left: 30px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #008080;
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-nav {
+            display: none;
+            flex-direction: column;
+            background-color: #ffffff;
+            position: absolute;
+            top: 70px;
+            right: 50px;
+            width: 200px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-nav a {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .mobile-nav a:last-child {
+            border-bottom: none;
+        }
+
+        .menu-icon {
+            display: none;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        /* Map Container */
+        #map {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 60px;
+            /* Adjusted to account for header height */
+            bottom: 0;
+        }
+
+        /* Search Bar */
+        .search-container {
+            position: absolute;
+            top: 80px;
+            /* Adjusted to place below header */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 420px;
+            height: 60px;
+            padding: 10px;
+            display: flex;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .search-container input {
+            flex: 1;
+            font-size: larger;
+            padding: 8px 10px;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-container button {
+            padding: 8px 15px;
+            margin-left: 5px;
+            width: 70px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2000;
+            border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-container button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
+
 <body>
+    <!-- Header Section -->
+    <header>
+        <div class="logo" href="{% url 'plan_view' %}">Hejje</div>
+        <nav>
+            <a href="{% url 'plan_view' %}">AI-Travel Planner</a>
+            <a href="{% url 'stream_view' %}">Map</a>
+        </nav>
+        <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+        <div class="mobile-nav" id="mobileNav">
+            <a href="{% url 'plan_view' %}">AI-Travel Planner</a>
+            <a href="{% url 'stream_view' %}">Map</a>
+        </div>
+    </header>
+
+    <!-- Search Bar -->
     <div class="search-container">
         <input type="text" id="search" placeholder="Search location">
         <button onclick="searchLocation()">Go</button>
     </div>
 
+    <!-- Map Container -->
     <div id="map"></div>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="{% static 'myapp/app.js' %}"></script>
+
+    <script>
+        function toggleMenu() {
+            const mobileNav = document.getElementById('mobileNav');
+            if (mobileNav.style.display === 'flex') {
+                mobileNav.style.display = 'none';
+            } else {
+                mobileNav.style.display = 'flex';
+            }
+        }
+    </script>
 </body>
+
 </html>

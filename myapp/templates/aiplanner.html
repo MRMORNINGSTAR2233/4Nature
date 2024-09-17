@@ -8,15 +8,258 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Powered Travel Planner</title>
     <link rel="stylesheet" href="{% static 'myapp/css/plan.css' %}">
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px ;
+            background-color: #ffffff;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        nav {
+            display: flex;
+        }
+
+        nav a {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            margin-left: 30px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #008080;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: url('https://source.unsplash.com/1600x900/?travel,adventure') center center/cover no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .hero h1 {
+            font-size: 60px;
+            margin-bottom: 20px;
+            animation: fadeInUp 1.5s ease-in-out;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            animation: fadeInUp 2s ease-in-out;
+        }
+
+        .hero a {
+            background-color: #008080;
+            padding: 15px 30px;
+            color: white;
+            border-radius: 30px;
+            font-size: 18px;
+            text-transform: uppercase;
+            transition: background-color 0.3s;
+            animation: fadeInUp 2.5s ease-in-out;
+        }
+
+        .hero a:hover {
+            background-color: #004c4c;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #ffffff;
+            padding: 20px 50px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: auto;
+    }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .footer-left {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .footer-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-right img {
+            margin-right: 10px;
+        }
+
+        .footer-right a {
+            color: #008080;
+            transition: color 0.3s;
+        }
+
+        .footer-right a:hover {
+            color: #004c4c;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Additional Styles for Form */
+        .planner-form {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .planner-form h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .planner-form form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .planner-form label {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .planner-form input,
+        .planner-form textarea {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 20px;
+        }
+
+        .planner-form button {
+            background-color: #008080;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .planner-form button:hover {
+            background-color: #004c4c;
+        }
+
+        #travel-plan {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        #travel-plan.hidden {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
 
+    <!-- Header Section -->
     <header>
-        <h1>AI-Powered Travel Planner</h1>
-        <p>Plan your next adventure with ease</p>
+        <div class="logo" href="{% url 'plan_view' %}">Hejje</div>
+        <nav>
+            <a href="{% url 'plan_view' %}">AI-Travel Planner</a>
+            <a href="{% url 'stream_view' %}">Map</a>
+        </nav>
     </header>
 
+    <!-- Main Content -->
     <main>
         <section class="planner-form">
             <h2>Create Your Travel Plan</h2>
@@ -40,6 +283,19 @@
             <p id="plan-output"></p>
         </section>
     </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-left">
+                © 2024 Hejje
+            </div>
+            <div class="footer-right">
+                <img src="{% static 'myapp/images/logo.png' %}" alt="Hejje Logo" width="30">
+                <a href="https://www.linkedin.com" target="_blank">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
 
     <script src="{% static 'myapp/plan.js' %}"></script>
 </body>
